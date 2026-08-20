@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const phone = '0755 123 456';
+const phone = '+40 742 565 046';
 
 function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
   const paths = {
@@ -15,7 +15,6 @@ function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
     door: <><path d="M5 21h14M7 21V4l9-2v19M7 4h9M12 12h.01"/></>,
     car: <><path d="m5 17-2-2v-4l2-1 2-4h10l2 4 2 1v4l-2 2zM7 17v3m10-3v3M5 10h14"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></>,
     safe: <><rect x="3" y="2" width="18" height="20" rx="2"/><rect x="6" y="5" width="12" height="14" rx="1"/><circle cx="12" cy="12" r="3"/><path d="M12 9v3l2 1"/></>,
-    key: <><circle cx="7" cy="12" r="4"/><path d="m11 12 10-7m-4 3 2 2m-5 0 2 2"/></>,
     check: <path d="m6 12 4 4 8-9"/>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></>,
     menu: <><path d="M4 6h16M4 12h16M4 18h16"/></>,
@@ -27,7 +26,7 @@ function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
 
 function Logo() {
   return <a className="logo" href="#acasa" aria-label="Deblocări Uși Cluj - Acasă">
-    <span className="logo-shield"><Icon name="shield" size={30} /></span>
+    <span className="logo-shield"><img src="/images/logo-shield.png" alt="" /></span>
     <span>DEBLOCĂRI UȘI<strong>CLUJ</strong></span>
   </a>;
 }
@@ -36,7 +35,7 @@ const services = [
   { icon: 'door', title: 'Deblocări uși', text: 'Deblocăm orice tip de ușă rapid și fără deteriorări.' },
   { icon: 'car', title: 'Deblocări auto', text: 'Acces rapid la mașina ta, fără zgârieturi sau daune.' },
   { icon: 'safe', title: 'Deschideri seifuri', text: 'Deschidem seifuri mecanice și electronice în siguranță.' },
-  { icon: 'key', title: 'Schimb yale și încuietori', text: 'Înlocuim yale, broaște și încuietori cu produse de calitate.' },
+  { image: '/images/key.png', title: 'Schimb yale și încuietori', text: 'Înlocuim yale, broaște și încuietori cu produse de calitate.' },
 ];
 
 const features = [
@@ -78,7 +77,7 @@ function App() {
           <a href="#despre" onClick={closeMenu}>Despre noi</a>
           <a href="#contact" onClick={closeMenu}>Contact</a>
         </nav>
-        <a className="header-phone" href="tel:+40755123456"><Icon name="phone" size={18}/>{phone}</a>
+        <a className="header-phone" href="tel:+40742565046"><Icon name="phone" size={18}/>{phone}</a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Deschide meniul" aria-expanded={menuOpen}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
       </div>
     </header>
@@ -91,13 +90,13 @@ function App() {
             <h1>Deblocări uși<br/><em>în Cluj-Napoca</em></h1>
             <p className="lead">Soluții rapide, profesionale și fără deteriorări.<br/>Suntem disponibili 24/7 în tot Clujul!</p>
             <div className="trust-row">
-              <div><span><Icon name="clock"/></span><p><b>Intervenție rapidă</b><small>20–30 minute</small></p></div>
-              <div><span><Icon name="shield"/></span><p><b>Fără deteriorări</b><small>100% siguranță</small></p></div>
-              <div><span><Icon name="check"/></span><p><b>Prețuri corecte</b><small>Fără costuri ascunse</small></p></div>
+              <div><span className="trust-image"><img src="/images/clock.png" alt=""/></span><p><b>Intervenție rapidă</b><small>20–30 minute</small></p></div>
+              <div><span className="trust-image"><img src="/images/security.png" alt=""/></span><p><b>Fără deteriorări</b><small>100% siguranță</small></p></div>
+              <div><span className="trust-image"><img src="/images/price-tag.png" alt=""/></span><p><b>Prețuri corecte</b><small>Fără costuri ascunse</small></p></div>
             </div>
             <div className="hero-actions">
-              <a className="button primary" href="tel:+40755123456"><Icon name="phone" size={19}/> Sună acum</a>
-              <a className="button whatsapp" href="https://wa.me/40755123456" target="_blank" rel="noreferrer"><span>◉</span> WhatsApp</a>
+              <a className="button primary" href="tel:+40742565046"><Icon name="phone" size={19}/> Sună acum</a>
+              <a className="button whatsapp" href="https://wa.me/40742565046" target="_blank" rel="noreferrer"><img className="whatsapp-icon" src="/images/whatsapp.png" alt=""/> WhatsApp</a>
             </div>
           </div>
           <div className="hero-media media-slot">
@@ -115,7 +114,7 @@ function App() {
         <div className="container">
           <div className="section-heading"><span>Serviciile noastre</span><h2>Cu ce te putem ajuta</h2></div>
           <div className="service-grid">{services.map((service) => <article className="service-card" key={service.title}>
-            <Icon name={service.icon} size={58}/><h3>{service.title}</h3><p>{service.text}</p><a href="#contact">Detalii <Icon name="arrow" size={16}/></a>
+            {service.image ? <img className="service-icon" src={service.image} alt=""/> : <Icon name={service.icon} size={58}/>}<h3>{service.title}</h3><p>{service.text}</p><a href="#contact">Detalii <Icon name="arrow" size={16}/></a>
           </article>)}</div>
         </div>
       </section>
@@ -127,7 +126,7 @@ function App() {
           <div className="reasons">{reasons.map(([title, text]) => <div key={title}><span><Icon name="check" size={15} strokeWidth={3}/></span><p><b>{title}</b><small>{text}</small></p></div>)}</div>
         </div>
         <div className="about-media media-slot">
-          <img src="/images/cluj-night.jpg" alt="Panorama orașului Cluj-Napoca seara" onError={(e) => e.currentTarget.classList.add('missing')} />
+          <img src="/images/cluj-night.jpg" alt="Tehnician care înlocuiește încuietoarea unei uși" onError={(e) => e.currentTarget.classList.add('missing')} />
           <span className="image-hint">Adaugă imaginea ta<br/><small>public/images/cluj-night.jpg</small></span>
         </div>
       </section>
@@ -148,7 +147,7 @@ function App() {
         <div className="contact-copy">
           <span className="section-kicker">Contact</span><h2>Sună-ne sau scrie-ne!</h2><p>Suntem disponibili 24/7 și gata să te ajutăm.<br/>Contactează-ne și vom ajunge la tine cât mai rapid!</p>
           <div className="contact-list">
-            <a href="tel:+40755123456"><span><Icon name="phone" size={15}/></span>{phone}</a>
+            <a href="tel:+40742565046"><span><Icon name="phone" size={15}/></span>{phone}</a>
             <a href="mailto:contact@deblocariusicluj.ro"><span><Icon name="mail" size={15}/></span>contact@deblocariusicluj.ro</a>
             <p><span><Icon name="map" size={15}/></span>Cluj-Napoca și împrejurimi</p>
           </div>
