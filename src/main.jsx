@@ -77,7 +77,7 @@ function App() {
           <a href="#despre" onClick={closeMenu}>Despre noi</a>
           <a href="#contact" onClick={closeMenu}>Contact</a>
         </nav>
-        <a className="header-phone" href="tel:+40742565046"><Icon name="phone" size={18}/>{phone}</a>
+        <a className="header-phone" href="tel:+40742565046"><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Deschide meniul" aria-expanded={menuOpen}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
       </div>
     </header>
