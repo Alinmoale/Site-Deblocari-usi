@@ -20,6 +20,7 @@ function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
     menu: <><path d="M4 6h16M4 12h16M4 18h16"/></>,
     close: <path d="m6 6 12 12M18 6 6 18"/>,
     arrow: <path d="M5 12h14m-5-5 5 5-5 5"/>,
+    chevron: <path d="m6 9 6 6 6-6"/>,
   };
   return <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }
@@ -63,7 +64,7 @@ const faqs = [
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState(0);
+  const [openFaq, setOpenFaq] = useState(-1);
   const [sent, setSent] = useState(false);
   const closeMenu = () => setMenuOpen(false);
 
@@ -78,7 +79,9 @@ function App() {
           <a href="#contact" onClick={closeMenu}>Contact</a>
         </nav>
         <a className="header-phone" href="tel:+40742565046"><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Deschide meniul" aria-expanded={menuOpen}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
+        <button className={menuOpen ? 'menu-button open' : 'menu-button'} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Închide meniul' : 'Deschide meniul'} aria-expanded={menuOpen}>
+          <span className="hamburger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
       </div>
     </header>
 
@@ -126,7 +129,7 @@ function App() {
           <div className="reasons">{reasons.map(([title, text]) => <div key={title}><span><Icon name="check" size={15} strokeWidth={3}/></span><p><b>{title}</b><small>{text}</small></p></div>)}</div>
         </div>
         <div className="about-media media-slot">
-          <img src="/images/cluj-night.jpg" alt="Tehnician care înlocuiește încuietoarea unei uși" onError={(e) => e.currentTarget.classList.add('missing')} />
+          <img src="/images/cluj-night.jpg" alt="Panoramă nocturnă a orașului Cluj-Napoca" onError={(e) => e.currentTarget.classList.add('missing')} />
           <span className="image-hint">Adaugă imaginea ta<br/><small>public/images/cluj-night.jpg</small></span>
         </div>
       </section>
@@ -135,8 +138,10 @@ function App() {
         <div className="container">
           <div className="section-heading"><span>Întrebări frecvente</span><h2>Răspunsuri la întrebările tale</h2></div>
           <div className="faq-grid">{faqs.map(([question, answer], i) => <div className={openFaq === i ? 'faq-item expanded' : 'faq-item'} key={question}>
-            <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} aria-expanded={openFaq === i}><span>{question}</span><b>⌄</b></button>
-            <div className="faq-answer"><p>{answer}</p></div>
+            <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} aria-expanded={openFaq === i} aria-controls={`faq-answer-${i}`}>
+              <span>{question}</span><Icon className="faq-chevron" name="chevron" size={18} strokeWidth={2.6}/>
+            </button>
+            <div className="faq-answer" id={`faq-answer-${i}`} role="region" aria-hidden={openFaq !== i}><p>{answer}</p></div>
           </div>)}</div>
         </div>
       </section>
@@ -160,7 +165,7 @@ function App() {
           {sent && <p className="form-success" role="status">Mulțumim! Mesajul a fost pregătit pentru trimitere.</p>}
         </form>
       </div>
-      <div className="container footer-bottom"><p>© 2026 Deblocări Uși Cluj. Toate drepturile rezervate.</p><p>Web design cu pasiune în Cluj <span>♥</span></p></div>
+      <div className="container footer-bottom"><p>© 2026 Deblocări Uși Cluj. Toate drepturile rezervate.</p></div>
     </footer>
   </>;
 }
