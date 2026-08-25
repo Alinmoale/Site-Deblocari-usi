@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -25,9 +25,9 @@ function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
   return <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }
 
-function Logo() {
-  return <a className="logo" href="#acasa" aria-label="Deblocări Uși Cluj - Acasă">
-    <span className="logo-shield"><img src="/images/logo-shield.png" alt="" /></span>
+function Logo({ onNavigate }) {
+  return <a className="logo" href="#acasa" onClick={(event) => onNavigate(event, 'acasa')} aria-label="Deblocări Uși Cluj - Acasă">
+    <span className="logo-shield"><img src="/images/logo-key-house-v2-small.png" alt="" width="120" height="80" /></span>
     <span>DEBLOCĂRI UȘI<strong>CLUJ</strong></span>
   </a>;
 }
@@ -35,16 +35,19 @@ function Logo() {
 const services = [
   {
     title: 'Deblocări uși',
+    image: '/images/service-deblocari-usi-480.jpg',
     text: 'Intervenție rapidă pentru uși de apartament, casă sau birou, realizată cu echipamente profesionale.',
     items: ['Uși metalice, din lemn sau PVC', 'Chei rupte ori blocate în yală', 'Fără deteriorări, când situația permite'],
   },
   {
     title: 'Schimb yale și încuietori',
+    image: '/images/service-schimb-yale-480.jpg',
     text: 'Înlocuim cilindri, yale, broaște și încuietori și verificăm funcționarea mecanismului după montaj.',
     items: ['Înlocuire cilindri și yale', 'Soluții pentru diferite tipuri de uși', 'Testarea mecanismului după montaj'],
   },
   {
     title: 'Deschideri seifuri',
+    image: '/images/service-deschideri-seifuri-480.jpg',
     text: 'Evaluăm mecanismul și alegem metoda potrivită pentru accesarea seifului în condiții de siguranță.',
     items: ['Seifuri mecanice și electronice', 'Cod uitat sau cheie pierdută', 'Evaluare înainte de intervenție'],
   },
@@ -81,17 +84,54 @@ const reviews = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(-1);
+  const [activeSection, setActiveSection] = useState('acasa');
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const sectionIds = ['acasa', 'servicii', 'despre', 'contact'];
+    const updateActiveSection = () => {
+      const headerOffset = window.innerWidth <= 980 ? 96 : 112;
+      let currentSection = 'acasa';
+
+      sectionIds.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section && section.getBoundingClientRect().top <= headerOffset) currentSection = id;
+      });
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) currentSection = 'contact';
+      setActiveSection(currentSection);
+    };
+
+    updateActiveSection();
+    if (window.location.hash) window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
+  }, []);
+
+  const handleNavClick = (event, section) => {
+    event.preventDefault();
+    setActiveSection(section);
+    closeMenu();
+    document.getElementById(section)?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+  };
 
   return <>
     <header className="site-header">
       <div className="container nav-wrap">
-        <Logo />
+        <Logo onNavigate={handleNavClick} />
         <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Navigație principală">
-          <a className="active" href="#acasa" onClick={closeMenu}>Acasă</a>
-          <a href="#servicii" onClick={closeMenu}>Servicii</a>
-          <a href="#despre" onClick={closeMenu}>Despre noi</a>
-          <a href="#contact" onClick={closeMenu}>Contact</a>
+          <a className={activeSection === 'acasa' ? 'active' : ''} href="#acasa" onClick={(event) => handleNavClick(event, 'acasa')}>Acasă</a>
+          <a className={activeSection === 'servicii' ? 'active' : ''} href="#servicii" onClick={(event) => handleNavClick(event, 'servicii')}>Servicii</a>
+          <a className={activeSection === 'despre' ? 'active' : ''} href="#despre" onClick={(event) => handleNavClick(event, 'despre')}>Despre noi</a>
+          <a className={activeSection === 'contact' ? 'active' : ''} href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>Contact</a>
         </nav>
         <a className="header-phone" href="tel:+40742565046"><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
         <button className={menuOpen ? 'menu-button open' : 'menu-button'} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Închide meniul' : 'Deschide meniul'} aria-expanded={menuOpen}>
@@ -118,21 +158,23 @@ function App() {
             </div>
           </div>
           <div className="hero-media media-slot">
-            <img src="/images/hero-locksmith.jpg" alt="Tehnician profesionist la o intervenție de deblocare" onError={(e) => e.currentTarget.classList.add('missing')} />
+            <img src="/images/hero-locksmith.jpg" alt="Tehnician profesionist la o intervenție de deblocare" width="1080" height="675" fetchPriority="high" onError={(e) => e.currentTarget.classList.add('missing')} />
             <span className="image-hint">Adaugă imaginea ta<br/><small>public/images/hero-locksmith.jpg</small></span>
           </div>
         </div>
       </section>
 
       <section className="feature-bar" aria-label="Avantaje">
-        <div className="container feature-grid">{features.map((f) => <article key={f.title}><Icon name={f.icon} size={42}/><div><h3>{f.title}</h3><p>{f.text}</p></div></article>)}</div>
+        <div className="container feature-grid">{features.map((f) => <div className="feature-item" key={f.title}><Icon name={f.icon} size={42}/><div><strong>{f.title}</strong><p>{f.text}</p></div></div>)}</div>
       </section>
 
       <section className="section services" id="servicii">
         <div className="container">
           <div className="section-heading"><span>Serviciile noastre</span><h2>Cu ce te putem ajuta</h2></div>
           <div className="service-grid">{services.map((service) => <article className="service-card" key={service.title}>
-            <div className="service-photo-placeholder" aria-hidden="true"></div>
+            {service.image
+              ? <img className="service-photo" src={service.image} alt={`Serviciu ${service.title.toLowerCase()}`} width="480" height="320" loading="lazy"/>
+              : <div className="service-photo-placeholder" aria-hidden="true"></div>}
             <div className="service-card-content">
               <h3>{service.title}</h3>
               <p>{service.text}</p>
@@ -144,14 +186,16 @@ function App() {
       </section>
 
       <section className="about" id="despre">
-        <div className="about-copy">
-          <span className="section-kicker">Despre noi</span><h2>De ce să ne alegi?</h2>
-          <p>Suntem o echipă locală din Cluj-Napoca, cu experiență și mii de intervenții reușite. Punem accent pe seriozitate, promptitudine și respect față de clienții noștri.</p>
-          <div className="reasons">{reasons.map(([title, text]) => <div key={title}><span><Icon name="check" size={15} strokeWidth={3}/></span><p><b>{title}</b><small>{text}</small></p></div>)}</div>
-        </div>
-        <div className="about-media media-slot">
-          <img src="/images/cluj-night.jpg" alt="Panoramă nocturnă a orașului Cluj-Napoca" onError={(e) => e.currentTarget.classList.add('missing')} />
-          <span className="image-hint">Adaugă imaginea ta<br/><small>public/images/cluj-night.jpg</small></span>
+        <div className="container about-grid">
+          <div className="about-copy">
+            <span className="section-kicker">Despre noi</span><h2>De ce să ne alegi?</h2>
+            <p>Suntem o echipă locală din Cluj-Napoca, cu experiență și mii de intervenții reușite. Punem accent pe seriozitate, promptitudine și respect față de clienții noștri.</p>
+            <div className="reasons">{reasons.map(([title, text]) => <div key={title}><span><Icon name="check" size={15} strokeWidth={3}/></span><p><b>{title}</b><small>{text}</small></p></div>)}</div>
+          </div>
+          <div className="about-media media-slot">
+            <img src="/images/cluj-night-optimized.jpg" alt="Panoramă nocturnă a orașului Cluj-Napoca" width="1000" height="664" loading="lazy" onError={(e) => e.currentTarget.classList.add('missing')} />
+            <span className="image-hint">Adaugă imaginea ta<br/><small>public/images/cluj-night.jpg</small></span>
+          </div>
         </div>
       </section>
 
@@ -234,10 +278,10 @@ function App() {
         </div>
         <nav className="footer-links" aria-label="Linkuri rapide">
           <h3>Link-uri rapide</h3>
-          <a href="#acasa">Acasă</a>
-          <a href="#servicii">Servicii</a>
-          <a href="#despre">Despre noi</a>
-          <a href="#contact">Contact</a>
+          <a href="#acasa" onClick={(event) => handleNavClick(event, 'acasa')}>Acasă</a>
+          <a href="#servicii" onClick={(event) => handleNavClick(event, 'servicii')}>Servicii</a>
+          <a href="#despre" onClick={(event) => handleNavClick(event, 'despre')}>Despre noi</a>
+          <a href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>Contact</a>
         </nav>
         <div className="footer-contact">
           <h3>Contact</h3>
