@@ -33,10 +33,21 @@ function Logo() {
 }
 
 const services = [
-  { icon: 'door', title: 'Deblocări uși', text: 'Deblocăm orice tip de ușă rapid și fără deteriorări.' },
-  { icon: 'car', title: 'Deblocări auto', text: 'Acces rapid la mașina ta, fără zgârieturi sau daune.' },
-  { icon: 'safe', title: 'Deschideri seifuri', text: 'Deschidem seifuri mecanice și electronice în siguranță.' },
-  { image: '/images/key.png', title: 'Schimb yale și încuietori', text: 'Înlocuim yale, broaște și încuietori cu produse de calitate.' },
+  {
+    title: 'Deblocări uși',
+    text: 'Intervenție rapidă pentru uși de apartament, casă sau birou, realizată cu echipamente profesionale.',
+    items: ['Uși metalice, din lemn sau PVC', 'Chei rupte ori blocate în yală', 'Fără deteriorări, când situația permite'],
+  },
+  {
+    title: 'Schimb yale și încuietori',
+    text: 'Înlocuim cilindri, yale, broaște și încuietori și verificăm funcționarea mecanismului după montaj.',
+    items: ['Înlocuire cilindri și yale', 'Soluții pentru diferite tipuri de uși', 'Testarea mecanismului după montaj'],
+  },
+  {
+    title: 'Deschideri seifuri',
+    text: 'Evaluăm mecanismul și alegem metoda potrivită pentru accesarea seifului în condiții de siguranță.',
+    items: ['Seifuri mecanice și electronice', 'Cod uitat sau cheie pierdută', 'Evaluare înainte de intervenție'],
+  },
 ];
 
 const features = [
@@ -57,15 +68,19 @@ const faqs = [
   ['Cât timp durează intervenția?', 'De regulă ajungem în 20–30 de minute, iar intervenția durează între 10 și 40 de minute, în funcție de situație.'],
   ['Cât costă o intervenție?', 'Prețul depinde de tipul ușii și de complexitatea lucrării. Îți comunicăm costul înainte de a începe.'],
   ['Deblocați uși fără să le deteriorați?', 'Da. Folosim metode și echipamente profesionale pentru a evita deteriorarea ușii ori de câte ori este posibil.'],
-  ['Interveniți și la mașini?', 'Da, oferim servicii de deblocare auto pentru majoritatea mărcilor și modelelor.'],
   ['Care sunt zonele în care interveniți?', 'Acoperim Cluj-Napoca și localitățile limitrofe. Sună-ne pentru confirmarea rapidă a disponibilității.'],
   ['Ce metode de plată acceptați?', 'Poți plăti numerar sau cu cardul, la finalul intervenției.'],
+];
+
+const reviews = [
+  { name: 'Andrei Pop', image: '/images/review-andrei.avif', text: 'Am rămas blocat afară din casă și au ajuns în mai puțin de 20 de minute. Profesioniști și foarte amabili. Recomand cu încredere!' },
+  { name: 'Ioana M.', image: '/images/review-ioana.avif', text: 'Serviciu rapid și eficient! Au deschis ușa fără să o deterioreze și prețul a fost corect. Mulțumesc!' },
+  { name: 'Mihai D.', image: '/images/review-mihai.avif', text: 'Am avut nevoie de schimbare de yală. Echipa a fost serioasă, lucrarea de calitate și garanție oferită. Super mulțumit!' },
 ];
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(-1);
-  const [sent, setSent] = useState(false);
   const closeMenu = () => setMenuOpen(false);
 
   return <>
@@ -117,7 +132,13 @@ function App() {
         <div className="container">
           <div className="section-heading"><span>Serviciile noastre</span><h2>Cu ce te putem ajuta</h2></div>
           <div className="service-grid">{services.map((service) => <article className="service-card" key={service.title}>
-            {service.image ? <img className="service-icon" src={service.image} alt=""/> : <Icon name={service.icon} size={58}/>}<h3>{service.title}</h3><p>{service.text}</p><a href="#contact">Detalii <Icon name="arrow" size={16}/></a>
+            <div className="service-photo-placeholder" aria-hidden="true"></div>
+            <div className="service-card-content">
+              <h3>{service.title}</h3>
+              <p>{service.text}</p>
+              <ul>{service.items.map((item) => <li key={item}><Icon name="check" size={15} strokeWidth={3}/><span>{item}</span></li>)}</ul>
+              <a href="tel:+40742565046">Solicită intervenție <Icon name="arrow" size={16}/></a>
+            </div>
           </article>)}</div>
         </div>
       </section>
@@ -134,6 +155,26 @@ function App() {
         </div>
       </section>
 
+      <section className="section reviews-section" aria-labelledby="reviews-title">
+        <div className="container">
+          <div className="section-heading reviews-heading">
+            <span>Ce spun clienții noștri</span>
+            <h2 id="reviews-title">Recenzii</h2>
+            <div className="overall-stars" aria-label="Evaluare 5 din 5">★★★★★</div>
+          </div>
+          <div className="reviews-grid">
+            {reviews.map((review) => <article className="review-card" key={review.name}>
+              <div className="review-top">
+                <img className="review-avatar" src={review.image} alt={`Fotografie ${review.name}`} width="48" height="48" loading="lazy" />
+                <div className="review-author"><h3>{review.name}</h3><span className="review-stars" aria-label="5 din 5 stele">★★★★★</span></div>
+                <img className="google-mark" src="/images/google-logo.png" alt="Google" width="24" height="24" />
+              </div>
+              <p>{review.text}</p>
+            </article>)}
+          </div>
+        </div>
+      </section>
+
       <section className="section faq-section">
         <div className="container">
           <div className="section-heading"><span>Întrebări frecvente</span><h2>Răspunsuri la întrebările tale</h2></div>
@@ -145,25 +186,67 @@ function App() {
           </div>)}</div>
         </div>
       </section>
+
+      <section className="location-section" id="contact">
+        <div className="container">
+          <div className="section-heading"><span>Contact și acoperire</span><h2>Suntem aproape de tine</h2></div>
+          <div className="location-grid">
+            <div className="location-details">
+              <article className="location-card">
+                <span className="location-icon"><Icon name="phone" size={22}/></span>
+                <div><h3>Telefon non-stop</h3><a href="tel:+40742565046">{phone}</a><p>Disponibili 24/7 pentru urgențe</p></div>
+              </article>
+              <article className="location-card">
+                <span className="location-icon"><Icon name="mail" size={22}/></span>
+                <div><h3>Email</h3><a href="mailto:contact@xn--cheie-locuin-9nb330b.ro">contact@cheie-locuință.ro</a><p>Răspundem cât mai rapid solicitărilor</p></div>
+              </article>
+              <article className="location-card">
+                <span className="location-icon"><Icon name="map" size={22}/></span>
+                <div><h3>Locație</h3><strong>Cluj-Napoca</strong><p>Acoperim orașul și localitățile învecinate</p></div>
+              </article>
+              <article className="location-card">
+                <span className="location-icon"><Icon name="clock" size={22}/></span>
+                <div><h3>Program</h3><strong>24/7 non-stop</strong><p>Inclusiv în weekend și de sărbători</p></div>
+              </article>
+            </div>
+            <div className="map-panel">
+              <iframe
+                title="Hartă Cluj-Napoca"
+                src="https://www.google.com/maps?q=Cluj-Napoca%2C%20Romania&z=11&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              ></iframe>
+              <div className="coverage-note">
+                <span><Icon name="map" size={24}/></span>
+                <div><h3>Acoperim întreg orașul</h3><p>Intervenții rapide în oraș și în localitățile din împrejurimi.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer id="contact">
+    <footer>
       <div className="container footer-grid">
         <div className="contact-copy">
           <span className="section-kicker">Contact</span><h2>Sună-ne sau scrie-ne!</h2><p>Suntem disponibili 24/7 și gata să te ajutăm.<br/>Contactează-ne și vom ajunge la tine cât mai rapid!</p>
+        </div>
+        <nav className="footer-links" aria-label="Linkuri rapide">
+          <h3>Link-uri rapide</h3>
+          <a href="#acasa">Acasă</a>
+          <a href="#servicii">Servicii</a>
+          <a href="#despre">Despre noi</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div className="footer-contact">
+          <h3>Contact</h3>
           <div className="contact-list">
             <a href="tel:+40742565046"><span><Icon name="phone" size={15}/></span>{phone}</a>
-            <a href="mailto:contact@deblocariusicluj.ro"><span><Icon name="mail" size={15}/></span>contact@deblocariusicluj.ro</a>
+            <a href="mailto:contact@xn--cheie-locuin-9nb330b.ro"><span><Icon name="mail" size={15}/></span>contact@cheie-locuință.ro</a>
             <p><span><Icon name="map" size={15}/></span>Cluj-Napoca și împrejurimi</p>
           </div>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); setSent(true); e.currentTarget.reset(); }}>
-          <div className="form-row"><input name="name" placeholder="Nume" aria-label="Nume" required/><input name="phone" placeholder="Telefon" aria-label="Telefon" required/></div>
-          <input type="email" name="email" placeholder="Email" aria-label="Email" required/>
-          <textarea name="message" placeholder="Mesaj" aria-label="Mesaj" required></textarea>
-          <button className="button primary" type="submit">Trimite mesaj</button>
-          {sent && <p className="form-success" role="status">Mulțumim! Mesajul a fost pregătit pentru trimitere.</p>}
-        </form>
       </div>
       <div className="container footer-bottom"><p>© 2026 Deblocări Uși Cluj. Toate drepturile rezervate.</p></div>
     </footer>
