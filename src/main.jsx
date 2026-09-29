@@ -4,6 +4,17 @@ import './styles.css';
 
 const phone = '+40 742 565 046';
 
+function trackPhoneClick() {
+  // Keep the native tel: action working even when tracking is unavailable.
+  if (typeof window.gtag !== 'function') return;
+
+  window.gtag('event', 'conversion', {
+    send_to: 'AW-18455307661/Ay4bCOek0okdEI3LluBE',
+    value: 1.0,
+    currency: 'RON',
+  });
+}
+
 function Icon({ name, size = 24, strokeWidth = 2, className = '' }) {
   const paths = {
     phone: <><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13 1 .37 1.97.72 2.9a2 2 0 0 1-.45 2.11L8.1 10a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.93.35 1.9.59 2.9.72A2 2 0 0 1 22 16.92z" /></>,
@@ -133,7 +144,7 @@ function App() {
           <a className={activeSection === 'despre' ? 'active' : ''} href="#despre" onClick={(event) => handleNavClick(event, 'despre')}>Despre noi</a>
           <a className={activeSection === 'contact' ? 'active' : ''} href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>Contact</a>
         </nav>
-        <a className="header-phone" href="tel:+40742565046"><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
+        <a className="header-phone" href="tel:+40742565046" onClick={trackPhoneClick}><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
         <button className={menuOpen ? 'menu-button open' : 'menu-button'} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Închide meniul' : 'Deschide meniul'} aria-expanded={menuOpen}>
           <span className="hamburger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
@@ -153,7 +164,7 @@ function App() {
               <div><span className="trust-image"><img src="/images/price-tag.png" alt=""/></span><p><b>Prețuri corecte</b><small>Fără costuri ascunse</small></p></div>
             </div>
             <div className="hero-actions">
-              <a className="button primary" href="tel:+40742565046"><Icon name="phone" size={19}/> Sună acum</a>
+              <a className="button primary" href="tel:+40742565046" onClick={trackPhoneClick}><Icon name="phone" size={19}/> Sună acum</a>
               <a className="button whatsapp" href="https://wa.me/40742565046" target="_blank" rel="noreferrer"><img className="whatsapp-icon" src="/images/whatsapp.png" alt=""/> WhatsApp</a>
             </div>
           </div>
@@ -179,7 +190,7 @@ function App() {
               <h3>{service.title}</h3>
               <p>{service.text}</p>
               <ul>{service.items.map((item) => <li key={item}><Icon name="check" size={15} strokeWidth={3}/><span>{item}</span></li>)}</ul>
-              <a href="tel:+40742565046">Solicită intervenție <Icon name="arrow" size={16}/></a>
+              <a href="tel:+40742565046" onClick={trackPhoneClick}>Solicită intervenție <Icon name="arrow" size={16}/></a>
             </div>
           </article>)}</div>
         </div>
@@ -238,7 +249,7 @@ function App() {
             <div className="location-details">
               <article className="location-card">
                 <span className="location-icon"><Icon name="phone" size={22}/></span>
-                <div><h3>Telefon non-stop</h3><a href="tel:+40742565046">{phone}</a><p>Disponibili 24/7 pentru urgențe</p></div>
+                <div><h3>Telefon non-stop</h3><a href="tel:+40742565046" onClick={trackPhoneClick}>{phone}</a><p>Disponibili 24/7 pentru urgențe</p></div>
               </article>
               <article className="location-card">
                 <span className="location-icon"><Icon name="mail" size={22}/></span>
@@ -286,7 +297,7 @@ function App() {
         <div className="footer-contact">
           <h3>Contact</h3>
           <div className="contact-list">
-            <a href="tel:+40742565046"><span><Icon name="phone" size={15}/></span>{phone}</a>
+            <a href="tel:+40742565046" onClick={trackPhoneClick}><span><Icon name="phone" size={15}/></span>{phone}</a>
             <a href="mailto:contact@xn--cheie-locuin-9nb330b.ro"><span><Icon name="mail" size={15}/></span>contact@cheie-locuință.ro</a>
             <p><span><Icon name="map" size={15}/></span>Cluj-Napoca și împrejurimi</p>
           </div>
