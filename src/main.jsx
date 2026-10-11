@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const phone = '+40 742 565 046';
+const phone = '0750 256 162';
 
 function trackPhoneClick() {
   // Keep the native tel: action working even when tracking is unavailable.
@@ -144,7 +144,7 @@ function App() {
           <a className={activeSection === 'despre' ? 'active' : ''} href="#despre" onClick={(event) => handleNavClick(event, 'despre')}>Despre noi</a>
           <a className={activeSection === 'contact' ? 'active' : ''} href="#contact" onClick={(event) => handleNavClick(event, 'contact')}>Contact</a>
         </nav>
-        <a className="header-phone" href="tel:+40742565046" onClick={trackPhoneClick}><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
+        <a className="header-phone" href="tel:+40750256162" onClick={trackPhoneClick}><Icon className="desktop-phone-icon" name="phone" size={18}/><img className="mobile-phone-icon" src="/images/phone-call.png" alt=""/>{phone}</a>
         <button className={menuOpen ? 'menu-button open' : 'menu-button'} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Închide meniul' : 'Deschide meniul'} aria-expanded={menuOpen}>
           <span className="hamburger-icon" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
@@ -164,8 +164,8 @@ function App() {
               <div><span className="trust-image"><img src="/images/price-tag.png" alt=""/></span><p><b>Prețuri corecte</b><small>Fără costuri ascunse</small></p></div>
             </div>
             <div className="hero-actions">
-              <a className="button primary" href="tel:+40742565046" onClick={trackPhoneClick}><Icon name="phone" size={19}/> Sună acum</a>
-              <a className="button whatsapp" href="https://wa.me/40742565046" target="_blank" rel="noreferrer"><img className="whatsapp-icon" src="/images/whatsapp.png" alt=""/> WhatsApp</a>
+              <a className="button primary" href="tel:+40750256162" onClick={trackPhoneClick}><Icon name="phone" size={19}/> Sună acum</a>
+              <a className="button whatsapp" href="https://wa.me/40750256162" target="_blank" rel="noreferrer"><img className="whatsapp-icon" src="/images/whatsapp.png" alt=""/> WhatsApp</a>
             </div>
           </div>
           <div className="hero-media media-slot">
@@ -190,7 +190,7 @@ function App() {
               <h3>{service.title}</h3>
               <p>{service.text}</p>
               <ul>{service.items.map((item) => <li key={item}><Icon name="check" size={15} strokeWidth={3}/><span>{item}</span></li>)}</ul>
-              <a href="tel:+40742565046" onClick={trackPhoneClick}>Solicită intervenție <Icon name="arrow" size={16}/></a>
+              <a href="tel:+40750256162" onClick={trackPhoneClick}>Solicită intervenție <Icon name="arrow" size={16}/></a>
             </div>
           </article>)}</div>
         </div>
@@ -249,7 +249,7 @@ function App() {
             <div className="location-details">
               <article className="location-card">
                 <span className="location-icon"><Icon name="phone" size={22}/></span>
-                <div><h3>Telefon non-stop</h3><a href="tel:+40742565046" onClick={trackPhoneClick}>{phone}</a><p>Disponibili 24/7 pentru urgențe</p></div>
+                <div><h3>Telefon non-stop</h3><a href="tel:+40750256162" onClick={trackPhoneClick}>{phone}</a><p>Disponibili 24/7 pentru urgențe</p></div>
               </article>
               <article className="location-card">
                 <span className="location-icon"><Icon name="mail" size={22}/></span>
@@ -297,7 +297,7 @@ function App() {
         <div className="footer-contact">
           <h3>Contact</h3>
           <div className="contact-list">
-            <a href="tel:+40742565046" onClick={trackPhoneClick}><span><Icon name="phone" size={15}/></span>{phone}</a>
+            <a href="tel:+40750256162" onClick={trackPhoneClick}><span><Icon name="phone" size={15}/></span>{phone}</a>
             <a href="mailto:contact@xn--cheie-locuin-9nb330b.ro"><span><Icon name="mail" size={15}/></span>contact@cheie-locuință.ro</a>
             <p><span><Icon name="map" size={15}/></span>Cluj-Napoca și împrejurimi</p>
           </div>
